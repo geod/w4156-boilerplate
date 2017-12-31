@@ -44,10 +44,10 @@ Resources:
       ContainerDefinitions:
         - Name: simple-app
           Image: amazon/amazon-ecs-sample
-          EntryPoint:
-            - /usr/sbin/apache2
-            - -D
-            - FOREGROUND
+#          EntryPoint: - proven to be uneccessary (from the example)
+#            - /usr/sbin/apache2
+#            - -D
+#            - FOREGROUND
           Essential: true
           Memory: 128
           MountPoints:

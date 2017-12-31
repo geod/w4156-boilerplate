@@ -69,3 +69,7 @@ Or just pull out the buildspec
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cd-pipeline.html
 
 
+Running the example locally
+docker run -it --rm -p 80:80 --entrypoint /bin/bash amazon/amazon-ecs-sample
+
+
