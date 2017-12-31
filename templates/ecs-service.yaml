@@ -1,0 +1,63 @@
+Parameters:
+  DesiredCount:
+    Type: Number
+    Default: 1
+
+  TargetGroup:
+    Type: String
+
+  Cluster:
+    Type: String
+
+Resources:
+  ECSServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument: |
+        {
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": { "Service": [ "ecs.amazonaws.com" ]},
+                "Action": [ "sts:AssumeRole" ]
+            }]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole
+
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref Cluster
+      Role: !Ref ECSServiceRole
+      DesiredCount: !Ref DesiredCount
+      TaskDefinition: !Ref TaskDefinition
+      LoadBalancers:
+        - ContainerName: simple-app
+          ContainerPort: 80
+          TargetGroupArn: !Ref TargetGroup
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub ${AWS::StackName}-simple-app
+      ContainerDefinitions:
+        - Name: simple-app
+          Image: amazon/amazon-ecs-sample
+          EntryPoint:
+            - /usr/sbin/apache2
+            - -D
+            - FOREGROUND
+          Essential: true
+          Memory: 128
+          MountPoints:
+            - SourceVolume: my-vol
+              ContainerPath: /var/www/my-vol
+          PortMappings:
+            - ContainerPort: 80
+      Volumes:
+        - Name: my-vol
+
+Outputs:
+  ServiceName:
+    Value: !Ref Service

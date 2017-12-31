@@ -1,0 +1,106 @@
+Description: >
+  This template illustrates how to use AWS CodeBuild and AWS CodePipeline to
+  achieve continuous deployment of source code from a GitHub repository via a
+  Docker container to an Amazon EC2 Container Service cluster.
+
+Parameters:
+  GitHubUser:
+    Type: String
+    Description: Your username on GitHub.
+
+  GitHubRepo:
+    Type: String
+    Description: The repo name of the sample service.
+
+  GitHubBranch:
+    Type: String
+    Default: master
+    Description: The branch of the repo to continuously deploy.
+
+  GitHubToken:
+    Type: String
+    Description: >
+      Token for the user specified above. (https://github.com/settings/tokens)
+
+  BaseCFURL:
+    Type: String
+    Default: https://s3.amazonaws.com/w4156-cf-bucket/
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterLabels:
+      GitHubUser:
+        default: "User"
+      GitHubRepo:
+        default: "Repo"
+      GitHubBranch:
+        default: "Branch"
+      GitHubToken:
+        default: "Personal Access Token"
+    ParameterGroups:
+      - Label:
+          default: GitHub Configuration
+        Parameters:
+          - GitHubRepo
+          - GitHubBranch
+          - GitHubUser
+          - GitHubToken
+
+
+Resources:
+
+  Cluster:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/w4156-cf-bucket/ecs-cluster.yaml
+      Parameters:
+        SourceSecurityGroup: !GetAtt LoadBalancer.Outputs.SecurityGroup
+        Subnets: !GetAtt VPC.Outputs.Subnets
+        VpcId: !GetAtt VPC.Outputs.VpcId
+
+  DeploymentPipeline:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/w4156-cf-bucket/deployment-pipeline.yaml
+      Parameters:
+        Cluster: !GetAtt Cluster.Outputs.ClusterName
+        Service: !GetAtt Service.Outputs.ServiceName
+        GitHubUser: !Ref GitHubUser
+        GitHubToken: !Ref GitHubToken
+        GitHubRepo: !Ref GitHubRepo
+        GitHubBranch: !Ref GitHubBranch
+
+  LoadBalancer:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/w4156-cf-bucket/load-balancer.yaml
+      Parameters:
+        Subnets: !GetAtt VPC.Outputs.Subnets
+        VpcId: !GetAtt VPC.Outputs.VpcId
+
+  VPC:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/w4156-cf-bucket/vpc.yaml
+      Parameters:
+        Name: !Ref AWS::StackName
+        VpcCIDR: 10.215.0.0/16
+        Subnet1CIDR: 10.215.10.0/24
+        Subnet2CIDR: 10.215.20.0/24
+
+  Service:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/w4156-cf-bucket/ecs-service.yaml
+      Parameters:
+        Cluster: !GetAtt Cluster.Outputs.ClusterName
+        TargetGroup: !GetAtt LoadBalancer.Outputs.TargetGroup
+
+Outputs:
+  ServiceUrl:
+    Description: The sample service that is being continuously deployed.
+    Value: !GetAtt LoadBalancer.Outputs.ServiceUrl
+
+  PipelineUrl:
+    Description: The continuous deployment pipeline in the AWS Management Console.
+    Value: !GetAtt DeploymentPipeline.Outputs.PipelineUrl
