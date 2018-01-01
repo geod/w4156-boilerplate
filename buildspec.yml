@@ -5,9 +5,12 @@ phases:
       - echo Entering Pre-Build .....
       - $(aws ecr get-login)
       - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+      - echo TAG:$TAG
       - IMAGE_URI="${REPOSITORY_URI}:${TAG}"
+      - echo IMAGE_URI:IMAGE_URI
   build:
     commands:
+      - echo building tag $IMAGE_URI
       - docker build --tag "$IMAGE_URI" .
 
     post_build:
