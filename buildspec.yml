@@ -12,15 +12,12 @@ phases:
     commands:
       - echo building tag $IMAGE_URI
       - docker build --tag "$IMAGE_URI" .
-
-    post_build:
-      commands:
-        - docker push "$IMAGE_URI"
-        - printf '[{"name":"simple-app","imageUri":"%s"}]' "$IMAGE_URI" > images.json
-        - echo Listing Post Build Director ...
-        - ls
-        - ls -l
+  post_build:
+    commands:
+      - docker push "$IMAGE_URI"
+      - printf '[{"name":"simple-app","imageUri":"%s"}]' "$IMAGE_URI" > images.json
+      - echo Listing Post Build Director ...
+      - ls
 artifacts:
   files:
     - images.json
-  discard-paths: yes
