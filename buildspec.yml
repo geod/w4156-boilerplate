@@ -7,7 +7,7 @@ phases:
       - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
       - echo TAG:$TAG
       - IMAGE_URI="${REPOSITORY_URI}:${TAG}"
-      - echo IMAGE_URI:IMAGE_URI
+      - echo IMAGE_URI:$IMAGE_URI
   build:
     commands:
       - echo building tag $IMAGE_URI
@@ -17,6 +17,7 @@ phases:
       commands:
         - docker push "$IMAGE_URI"
         - printf '[{"name":"simple-app","imageUri":"%s"}]' "$IMAGE_URI" > images.json
+        - ls -lah
 artifacts:
   files:
     - images.json
