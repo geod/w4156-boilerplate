@@ -2,6 +2,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo Entering Pre-Build .....
       - $(aws ecr get-login)
       - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
       - IMAGE_URI="${REPOSITORY_URI}:${TAG}"
