@@ -20,4 +20,5 @@ phases:
         - ls -lah
 artifacts:
   files:
-    - images.json
+    - '*/images.json'
+  discard-paths: yes
