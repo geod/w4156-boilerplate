@@ -17,8 +17,10 @@ phases:
       commands:
         - docker push "$IMAGE_URI"
         - printf '[{"name":"simple-app","imageUri":"%s"}]' "$IMAGE_URI" > images.json
-        - ls -lah
+        - echo Listing Post Build Director ...
+        - ls
+        - ls -l
 artifacts:
   files:
-    - '*/images.json'
+    - images.json
   discard-paths: yes
