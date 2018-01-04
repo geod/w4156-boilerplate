@@ -6,11 +6,11 @@ to lectures. The project contains
 
 1. Python flask server
 2. Docker support to run locally
-3. Support to run dynamodb locally
+3. Support to run dynamodb locally (in a docker)
 
 ## Acknowledgements
 
-https://github.com/awslabs/ecs-refarch-continuous-deployment
+The AWS continuous delivery pipeline is based on the [reference architecture](https://github.com/awslabs/ecs-refarch-continuous-deployment)
 
 ## Local Installation Dependencies
 
@@ -23,6 +23,13 @@ https://github.com/awslabs/ecs-refarch-continuous-deployment
 7. [Spotify](https://www.spotify.com/us/) Optional!
 
 # Local Deployment Instructions
+
+A set of convenience scripts have been provided to start and stop
+
+1. Pull the local docker dynamo image
+```
+./bin/docker_dynamo.sh pull
+```
 
 # AWS Deployment Instructions
 
