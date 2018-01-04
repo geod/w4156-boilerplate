@@ -1,75 +1,79 @@
 # w4156-boiler-plate
 
-https://github.com/cnadiminti/docker-dynamodb-local
+## Overview
+Boiler-plate starting project for W4156. Teams can optionally use this project to get started and add to it in parallel
+to lectures
+
+## Acknowledgements
 
 https://github.com/awslabs/ecs-refarch-continuous-deployment
 
-PREREQUISITES
-python 3.6
-Proto io
-AWS CLI
-Docker
-PyCharm
-    - an associated setup
-Github account
-    - create an access key and store it somewhere safe
-    - clone the lecture code
-    - one of you clone the boiler plate
-Spotify
-Waffle
+## Pre-requisites
+
+1. Git fork
+2. python 3.6
+3. Proto io
+4. AWS CLI
+5. Docker
+6. PyCharm
+7. Waffle
+8. Spotify
 
 
-1.
+# Local Deployment Instructions
+
+# AWS Deployment Instructions
+
+## Inital Setup
+
+1. Configure your aws CLI
+```
 aws configure
+```
 
-2.
+2. Create an access
+```
 aws iam create-group --group-name Admins
-
 aws iam create-user --user-name teammember1
 aws iam create-user --user-name teammember2
 aws iam create-user --user-name teammember3
 aws iam create-user --user-name teammember4
+```
 
+3. Create a policy called Admin and grant it administrator rights
+```
 aws iam attach-group-policy --group-name Admins --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+```
 
+4. Give admin priviledges to each of your team members
+```
 aws iam add-user-to-group --user-name teammember1 --group-name Admins
 aws iam add-user-to-group --user-name teammember2 --group-name Admins
 aws iam add-user-to-group --user-name teammember3 --group-name Admins
 aws iam add-user-to-group --user-name teammember4 --group-name Admins
+```
 
-# CUSTOMIZE THE PASSWORD THEN IMMEDIATELY RESET
+4. Create a new password initial password for each team member
 aws iam create-login-profile --user-name teammember1 --password <<a password>> --password-reset-required
 aws iam create-login-profile --user-name teammember2 --password <<a password>> --password-reset-required
 aws iam create-login-profile --user-name teammember3 --password <<a password>> --password-reset-required
 aws iam create-login-profile --user-name teammember4 --password <<a password>> --password-reset-required
 
-aws iam create-account-alias --account-alias w4156pride
+5. Create an alias for your account (this allows a logical/vanity name on various URLS)
+aws iam create-account-alias --account-alias <<TEAM NAME>>
 
-https://<<<<WHATEVER YOUR ACCOUNT ALIAS WAS>>>>.signin.aws.amazon.com/console/
+6. Each team member must now log in and change their password
+https://<<TEAM NAME>>>.signin.aws.amazon.com/console/
 
+7. Log into Github and create a github access key https://github.com/settings/tokens
 
-aws cloudformation validate-template --template-body file://s3.yaml
+8. One member of the team must now execute
+aws cloudformation create-stack --stack-name w4156-cd-pipeline --template-body file://templates/ecs-cicd-refarch.yaml --parameters ParameterKey=GitHubUser,ParameterValue=<<GITHUB USERNAME>> ParameterKey=GitHubRepo,ParameterValue=<<YOUR GITHUB PROJECT>> ParameterKey=GitHubBranch,ParameterValue=master ParameterKey=GitHubToken,ParameterValue=<<GITHUB ACCESS KEY>> --capabilities CAPABILITY_IAM
 
-aws cloudformation create-stack --stack-name w4156-cd-pipeline --template-body file://templates/ecs-cicd-refarch.yaml --parameters ParameterKey=GitHubUser,ParameterValue=geod ParameterKey=GitHubRepo,ParameterValue=w4156-boilerplate ParameterKey=GitHubBranch,ParameterValue=master ParameterKey=GitHubToken,ParameterValue=<<Github token>> --capabilities CAPABILITY_IAM
-
-
-###
+### Customizing Cloud Formation
+If there is a need to customize the cloud formation documents then you will need to create your own AWS S3 bucket
 aws s3api create-bucket --bucket w4156-cf-bucket --region us-east-1 --acl public-read
 aws s3 cp templates/ s3://w4156-cf-bucket/ --recursive --include "*.yaml"
 
-
-#######
-TODO
-1. Need to change the container
-
-2. Pipeline itself should be a file (is this much different than CF?)
-https://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines-create.html
-
-Or just pull out the buildspec
-https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cd-pipeline.html
-
-
-Running the example locally
-docker run -it --rm -p 80:80 --entrypoint /bin/bash amazon/amazon-ecs-sample
 
 
