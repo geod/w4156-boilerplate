@@ -7,6 +7,7 @@ to lectures. The project contains
 1. Python flask server
 2. Docker support to run locally
 3. Support to run dynamodb locally (in a docker)
+4. Integration with AWS to run a docker continuous deployment pipeline
 
 ## Acknowledgements
 
