@@ -115,6 +115,7 @@ https://<<TEAM NAME>>>.signin.aws.amazon.com/console/
 ```
 
 7. Log into Github and create a github [access token](https://github.com/settings/tokens/new)
+- Enable the 'repo' scope and the 4 settings within
 
 8. One member of the team must now execute
 ```
