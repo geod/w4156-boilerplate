@@ -2,7 +2,7 @@
 
 name=flask
 image=w4156
-echo "name:"$name
+echo "name:"$name "image:$image"
 
 function stop() {
     echo "Checking if container for $name is running ....."
@@ -16,17 +16,32 @@ function stop() {
     fi
 }
 
+function start(){
+    echo "Removing previous container for $name"
+    docker rm $(docker ps -aq --filter name=$name)
+    echo "Starting Container ...."
+    docker run -d -p 5000:80 --link dynamo:dynamo --name=$name $image
+}
+
+function build(){
+    echo "Building ...."
+    docker build -t $image:latest .
+}
+
 case "$1" in
         build)
-            docker build -t $image:latest .
+            build
             ;;
 
         start)
             stop
-            echo "Removing previous container for $name"
-            docker rm $(docker ps -aq --filter name=$name)
-            echo "Starting Container ...."
-	        docker run -d -p 5000:5000 --link dynamo:dynamo --name=$name $image
+            start
+            ;;
+
+        buildrun)
+            build
+            stop
+            start
             ;;
 
         stop)
@@ -43,7 +58,7 @@ case "$1" in
                 echo "Connecting to container:$CONTAINERID"
                 docker exec -it $CONTAINERID bash
             fi
-         
+            ;;
         bash)
             stop
             echo "Starting new instance to bash into (note this is not running flask) ...."
@@ -55,7 +70,7 @@ case "$1" in
             ;;
          
         *)
-        echo $"Usage: $0 {start|stop|bash|runtests}"
+        echo $"Usage: $0 {build|start|stop|connect|bash|runtests}"
         exit 1
  
 esac

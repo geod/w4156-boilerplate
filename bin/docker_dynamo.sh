@@ -1,6 +1,7 @@
 #!/bin/bash
 
 name=dynamo
+pwd=devpassword
 echo "name:"$name
 
 function stop() {
@@ -16,16 +17,16 @@ function stop() {
 }
 
 case "$1" in
-        build)
-            docker build -t w4156:latest .
-            ;;
+        pull)
+	        docker pull cnadiminti/dynamodb-local
+	        ;;
 
         start)
             stop
             echo "Removing previous container for $name"
             docker rm $(docker ps -aq --filter name=$name)
             echo "Starting Container ...."
-	        docker run -d -p 5000:5000 --link dynamo:dynamo --name=$name w4156
+	        docker run -v $pwd:/dynamodb_local_db -d -p 8000:8000 --name=$name cnadiminti/dynamodb-local:latest
             ;;
 
         stop)
@@ -42,19 +43,10 @@ case "$1" in
                 echo "Connecting to container:$CONTAINERID"
                 docker exec -it $CONTAINERID bash
             fi
-
-        bash)
-            stop
-            echo "Starting new instance to bash into (note this is not running flask) ...."
-            docker run -i -t --link dynamo:dynamo --rm --entrypoint /bin/bash w4156
-            ;;
-
-        runtests)
-            docker run --interactive --tty w4156 'bin/tests_run.sh'
             ;;
 
         *)
-        echo $"Usage: $0 {start|stop|bash|runtests}"
+        echo $"Usage: $0 {pull|start|stop}"
         exit 1
 
 esac
