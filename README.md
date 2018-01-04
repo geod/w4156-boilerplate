@@ -2,8 +2,9 @@
 
 ## Overview
 Boiler-plate starting project for W4156. Teams can optionally use this project to get started and add to it in parallel
-to lectures. The project contains
+to lectures. 
 
+Project contains:
 1. Python flask server
 2. Docker support to run locally
 3. Support to run dynamodb locally (in a docker)
@@ -28,10 +29,9 @@ The AWS continuous delivery pipeline is based on the [reference architecture](ht
 
 ## Github Instructions
 
-TODO
-1. If you do not have it already each member of the team needs to create a github project
+1. If you do not have it already each member of the team needs to create a github account
 2. If your team chooses to use the boilerplate python, flask, docker as a starting point then one member of the team should fork the [boilerplate (this project)](https://github.com/geod/w4156-boilerplate)
-3. 
+3. Add your team members [add collaborators](https://help.github.com/articles/inviting-collaborators-to-a-personal-repository/) to the project
 
 # IDE Setup
 
