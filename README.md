@@ -2,27 +2,31 @@
 
 ## Overview
 Boiler-plate starting project for W4156. Teams can optionally use this project to get started and add to it in parallel
-to lectures
+to lectures. The project contains
+
+1. Python flask server
+2. Docker support to run locally
+3. Support to run dynamodb locally
 
 ## Acknowledgements
 
 https://github.com/awslabs/ecs-refarch-continuous-deployment
 
-## Pre-requisites
+## Local Installation Dependencies
 
-1. Git fork
-2. python 3.6
-3. Proto io
-4. AWS CLI
-5. Docker
-6. PyCharm
-7. Waffle
-8. Spotify
-
+1. [Git CLI](https://git-scm.com/downloads)
+2. [python 3.6](https://www.python.org/downloads/release/python-364/)
+3. [AWS CLI](https://aws.amazon.com/cli/) (pip install awscli)
+4. [Docker](https://docs.docker.com/engine/installation/)
+5. [PyCharm](https://www.jetbrains.com/shop/eform/students) NOTE - make sure to get the professional using edu email
+6. Proto.io (instructions given on piazza)
+7. [Spotify](https://www.spotify.com/us/) Optional!
 
 # Local Deployment Instructions
 
 # AWS Deployment Instructions
+
+Follow the below to configure deploying on AWS
 
 ## Inital Setup
 
@@ -85,5 +89,6 @@ aws s3api create-bucket --bucket w4156-cf-bucket --region us-east-1 --acl public
 aws s3 cp templates/ s3://w4156-cf-bucket/ --recursive --include "*.yaml"
 ```
 
+# Commit
 
-
+Following the AWS setup instructions any commit to github will trigger the CD pipeline
