@@ -20,15 +20,46 @@ The AWS continuous delivery pipeline is based on the [reference architecture](ht
 4. [Docker](https://docs.docker.com/engine/installation/)
 5. [PyCharm](https://www.jetbrains.com/shop/eform/students) NOTE - make sure to get the professional using edu email
 6. Proto.io (instructions given on piazza)
-7. [Spotify](https://www.spotify.com/us/) Optional!
+7. [Slack](https://slack.com/) Set up a chat for the team to communicate
+8. [VirtualEnv](https://virtualenv.pypa.io/en/stable/installation/)
+9. [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en) Optional - is a tool to help test
+10. [Spotify](https://www.spotify.com/us/) Optional!
+
+## Github Instructions
+
+TODO
+1. If you do not have it already each member of the team needs to create a github project
+2. If your team chooses to use the boilerplate python, flask, docker as a starting point then one member of the team should fork the [boilerplate (this project)](https://github.com/geod/w4156-boilerplate)
+3. 
+
+# IDE Setup
+
+TODO
 
 # Local Deployment Instructions
 
+You can of course develop directly out of the IDE. Once you are starting to prepare to deploy you should run in containers locally. 
+
 A set of convenience scripts have been provided to start and stop
 
-1. Pull the local docker dynamo image
+1. Pull the local docker dynamo image (this downloads dynamodb to be able to run locally)
 ```
 ./bin/docker_dynamo.sh pull
+```
+
+2. Start the dynamo instance
+```
+./bin/docker_dynamo.sh start
+```
+
+It should say something like below. Dynamo database is now running locally
+```
+Checking if container for dynamo is running .....
+   Container was not running
+Removing previous container for dynamo
+ec8d64dd4897
+Starting Container ....
+810141dbec4fa37d4697aa4f8faaef6244d5e192267058949b90ab93822b65db
 ```
 
 # AWS Deployment Instructions
@@ -82,7 +113,7 @@ aws iam create-account-alias --account-alias <<TEAM NAME>>
 https://<<TEAM NAME>>>.signin.aws.amazon.com/console/
 ```
 
-7. Log into Github and create a github access key https://github.com/settings/tokens
+7. Log into Github and create a github [access token](https://github.com/settings/tokens/new)
 
 8. One member of the team must now execute
 ```
