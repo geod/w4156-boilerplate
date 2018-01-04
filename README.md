@@ -21,7 +21,7 @@ The AWS continuous delivery pipeline is based on the [reference architecture](ht
 3. [AWS CLI](https://aws.amazon.com/cli/) (pip install awscli)
 4. [Docker](https://docs.docker.com/engine/installation/)
 5. [PyCharm](https://www.jetbrains.com/shop/eform/students) NOTE - make sure to get the professional using edu email
-6. Proto.io (instructions given on piazza)
+6. Proto.io (TODO instructions given on piazza)
 7. [Slack](https://slack.com/) Set up a chat for the team to communicate
 8. [VirtualEnv](https://virtualenv.pypa.io/en/stable/installation/)
 9. [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en) Optional - is a tool to help test
@@ -68,6 +68,8 @@ Starting Container ....
 Follow the below to configure deploying on AWS
 
 ## Inital Setup
+
+0. Get an AWS education account (instructions on piazza)
 
 1. Configure your aws CLI
 ```
